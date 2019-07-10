@@ -39,6 +39,9 @@
 %   gridPoints: final measurement point meshgrid
 %
 % NOTES
+% Please cite
+% Landauer, A.K., Patel, M., Henann, D.L. et al. Exp Mech (2018).
+% https://doi.org/10.1007/s11340-018-0377-4
 % -------------------------------------------------------------------------
 %% Set up workspace and images
 
@@ -66,11 +69,11 @@ crop = 'no';
 resultsFolder = ['.',filesep,'Results',filesep];
 
 numImages = 3; %use only first n images in the folder
-
+spacing = 1; %spacing between images to using in input stack
 %Convert input images to .mat
 filt_opt = {'gaussian',[3,3],0.5};
-[~,filename] = img2mat(folder_out,ext_crp,'on',filt_opt); %All images in "imagesFolder"
-% [cellIMG,filename] = img2mat(folder_out,ext_crp,'on',numImages); %Images 1 to
+[~,filename] = img2mat(folder_out,ext_crp,'on',filt_opt,spacing); %All images in "imagesFolder"
+% [cellIMG,filename] = img2mat(folder_out,ext_crp,'on',spacing,numImages); %Images 1 to
 
 %% RUNNING DIC
 
@@ -114,14 +117,14 @@ if no_im == 0
     fprintf('Measurement res, x    %0.2g\n   ',meas_res(1));
     fprintf('Measurement res, y    %0.2g\n',meas_res(2));
     fprintf('-----------------------------------------\n');
-    
+
     %Save relavent workspace variables
     save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoint','reporting_table');
 else
     %Save relavent workspace variables
     save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoints');
 end
-    
+
 %% CLEAN UP
 %Clean up the current set of images from the cd
 delete *IDIC_image*.mat

@@ -23,12 +23,14 @@ function [u,alpha_mask,nan_mask,edge_pts] = replaceOutliers_2D(u,cc)
 %
 % NOTES
 % -------------------------------------------------------------------------
-%
+%Please cite:
+% Landauer, A.K., Patel, M., Henann, D.L. et al. Exp Mech (2018).
+% https://doi.org/10.1007/s11340-018-0377-4
+
 
 inpaint_opt = 0;
 
 %convert to alpha masks for plotting
-
 %zero == pass
 alpha_mask.qf1 = zeros(size(cc.qfactors_accept{1}));
 alpha_mask.qf2 = zeros(size(cc.qfactors_accept{2}));
@@ -73,16 +75,13 @@ nan_mask.qf1(edgesq==1) = 1;
 nan_mask.qf2(edgesq==1) = 1;
 
 for i = 1:length(u)
-    % Union nan mask   
+    % Union nan mask
     union_mask_u{i} = nan_mask.qf1.*nan_mask.qf2.*nan_mask.u{i};
-    
+
     % apply nan mask
     u{i} = u{i}.*union_mask_u{i};
-    
+
     % fill in nan'd values
     u{i} = inpaint_nans(double(u{i}),inpaint_opt);
-    
+
 end
-
-
-
