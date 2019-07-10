@@ -68,12 +68,37 @@ crop = 'no';
 
 resultsFolder = ['.',filesep,'Results',filesep];
 
-numImages = 3; %use only first n images in the folder
+numImages = 3; %use only first n images in the folder, 'all' for all images
 spacing = 1; %spacing between images to using in input stack
 %Convert input images to .mat
+
+filter_yes_no = 'yes';
 filt_opt = {'gaussian',[3,3],0.5};
-[~,filename] = img2mat(folder_out,ext_crp,'on',filt_opt,spacing); %All images in "imagesFolder"
-% [cellIMG,filename] = img2mat(folder_out,ext_crp,'on',spacing,numImages); %Images 1 to
+
+mat_file_save_yes_no = 'no'; % Whether or not to save each img or keep in RAM.
+                      %For large images or a large number of image, save
+                      %them to disk ("yes") if you run out of RAM, otherwise 
+                      %keeping in RAM ("no") is a faster options.
+
+if strcmp(mat_file_save_yes_no(1),'n')
+    %no mat files saved
+    if ischar(numImages(1))
+        [cellIMG,filename] = img2mat(folder_out,mat_file_save_yes_no,...
+            ext_crp,filter_yes_no,filt_opt,spacing); %All images in "imagesFolder"
+    else
+        [cellIMG,filename] = img2mat(folder_out,mat_file_save_yes_no,ext_crp,...
+            filter_yes_no,filt_opt,spacing,numImages); %Images 1 to numImages
+    end
+else
+    %with mat files saved
+    if ischar(numImages(1))
+        [~,filename] = img2mat(folder_out,mat_file_save_yes_no,...
+            ext_crp,filter_yes_no,filt_opt,spacing); %All images in "imagesFolder"
+    else
+        [~,filename] = img2mat(folder_out,mat_file_save_yes_no,ext_crp,...
+            filter_yes_no,filt_opt,spacing,numImages); %Images 1 to numImages
+    end
+end
 
 %% RUNNING DIC
 
@@ -85,7 +110,15 @@ if isempty(pool)
 end
 
 % Estimate displacements via IDIC
-[u, cc, dm, gridPoints, tSwitch] = funIDIC(filename, sSize, sSizeMin, runMode);
+if strcmp(mat_file_save_yes_no(1),'n')
+[u, cc, dm, gridPoints, tSwitch] = ...
+    funIDIC(cellIMG, sSize, sSizeMin, runMode); %pass "cellIMG" if mat_file_save is
+                                                 %"no" or "filename" if
+                                                 %"yes" (first argument)
+else
+[u, cc, dm, gridPoints, tSwitch] = funIDIC(filename, sSize, sSizeMin, runMode); 
+end
+
 % Save the results
 if exist(resultsFolder,'dir') ~= 7
     mkdir(resultsFolder)
@@ -125,7 +158,10 @@ else
     save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoints');
 end
 
+
 %% CLEAN UP
 %Clean up the current set of images from the cd
-delete *IDIC_image*.mat
-delete(strcat(folder_out,'*.',ext_crp));
+if strcmp(mat_file_save_yes_no(1),'y')
+    delete *IDIC_image*.mat
+    delete(strcat(folder_out,'*.',ext_crp));
+end
