@@ -51,8 +51,8 @@ clear; close all; clc;
 sSize = [64 64];
 sSizeMin = 16;
 runMode = 'c'; %use 'i' for incremental mode, 'c' for cumulative, and 'h' for hybrid
-ext_in = 'tiff'; %Input image format
-folder_in = ['.',filesep,'example_images',filesep,'Sample12']; %Folder containing the images series
+ext_in = 'tif'; %Input image format
+folder_in = ['.',filesep,'example_images']; %Folder containing the images series
 max_def_idx = 'b'; %Specify where the max deformation occurs
 %use 'center' or 'c' for the center image,
 %'end' or 'e' for the last image,
