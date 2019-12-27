@@ -38,13 +38,14 @@ l = length(files);
 
 %Only procede if evaluation images are present
 if l == 0
+    disp('Image evaluation skipped')
     %set failure flag
     no_im = 1;
     noise_percent = nan;
     spatial_res = nan;
     CI_disp_mean = nan;
 else
-
+    disp('Running image evaluation DIC')
     no_im = 0;
 
     %read in the image sequence

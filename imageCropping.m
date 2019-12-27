@@ -49,6 +49,7 @@ loc = strcat(folder_in,filesep,'*',ext_in);
 if isempty(files)
     fprintf('NO IMAGE FILES FOUND UNDER: %s \n',loc)
 end
+if strcmp(numImages,'all'), numImages = inf; end
 l = min(length(files),numImages);
 
 %% Get Cropping Region
