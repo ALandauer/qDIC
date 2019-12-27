@@ -54,23 +54,23 @@ runMode = 'c'; %use 'i' for incremental mode, 'c' for cumulative, and 'h' for hy
 ext_in = 'tif'; %Input image format
 folder_in = ['.',filesep,'example_images']; %Folder containing the images series
 max_def_idx = 'b'; %Specify where the max deformation occurs
-%use 'center' or 'c' for the center image,
-%'end' or 'e' for the last image,
-%'beginning' or 'b' for the first,
-%or specific with an integer
+                    %use 'center' or 'c' for the center image,
+                    %'end' or 'e' for the last image,
+                    %'beginning' or 'b' for the first,
+                    %or specific with an integer
+numImages = 3; %use only first n images in the folder, 'all' for all images
+spacing = 1; %spacing between images to using in input stack
+              %Convert input images to .mat
 
 %Compute basic noise floor and measurement resultion metrics
 [noise_percent,meas_res,CI_disp_mean,no_im] = image_eval(folder_in,ext_in);
 
 %Optionally crop images.  Set crop to 'y' or 'yes' to enable cropping.
-crop = 'no';
-[crop_nw_loc,folder_out,ext_crp] = imageCropping(folder_in,ext_in,sSize,max_def_idx,crop);
+crop = 'yes';
+[crop_nw_loc,folder_out,ext_crp] = imageCropping(folder_in,ext_in,numImages,spacing,max_def_idx,crop);
 
-resultsFolder = ['.',filesep,'Results',filesep];
+resultsFolder = ['.',filesep,'Results_VN600_test1_2m_20191222',filesep];
 
-numImages = 3; %use only first n images in the folder, 'all' for all images
-spacing = 1; %spacing between images to using in input stack
-%Convert input images to .mat
 
 filter_yes_no = 'yes';
 filt_opt = {'gaussian',[3,3],0.5};
