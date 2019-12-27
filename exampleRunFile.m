@@ -63,13 +63,15 @@ spacing = 1; %spacing between images to using in input stack
               %Convert input images to .mat
 
 %Compute basic noise floor and measurement resultion metrics
-[noise_percent,meas_res,CI_disp_mean,no_im] = image_eval(folder_in,ext_in);
+[noise_percent,meas_res,CI_disp_mean,no_im] = image_eval(folder_in,ext_in,sSize,sSizeMin);
 
-%Optionally crop images.  Set crop to 'y' or 'yes' to enable cropping.
+%Optionally crop images.  Set crop to 'y' or 'yes' to enable cropping,
+%or enter a set of coordinates [x_topleft,y_topleft,x_bottomright,y_bottomright].
 crop = 'yes';
+% crop = [1,1,511,511];
 [crop_nw_loc,folder_out,ext_crp] = imageCropping(folder_in,ext_in,numImages,spacing,max_def_idx,crop);
 
-resultsFolder = ['.',filesep,'Results_VN600_test1_2m_20191222',filesep];
+resultsFolder = ['.',filesep,'Results',filesep];
 
 
 filter_yes_no = 'yes';
@@ -77,7 +79,7 @@ filt_opt = {'gaussian',[3,3],0.5};
 
 mat_file_save_yes_no = 'no'; % Whether or not to save each img or keep in RAM.
                       %For large images or a large number of image, save
-                      %them to disk ("yes") if you run out of RAM, otherwise 
+                      %them to disk ("yes") if you run out of RAM, otherwise
                       %keeping in RAM ("no") is a faster options.
 
 if strcmp(mat_file_save_yes_no(1),'n')
@@ -116,7 +118,7 @@ if strcmp(mat_file_save_yes_no(1),'n')
                                                  %"no" or "filename" if
                                                  %"yes" (first argument)
 else
-[u, cc, dm, gridPoints, tSwitch] = funIDIC(filename, sSize, sSizeMin, runMode); 
+[u, cc, dm, gridPoints, tSwitch] = funIDIC(filename, sSize, sSizeMin, runMode);
 end
 
 % Save the results
@@ -129,7 +131,7 @@ if no_im == 0
     %Build the reporting table struct array
     prefilt_str = strcat(filt_opt{1},', ',num2str(filt_opt{2}),', ',num2str(filt_opt{3}));
     reporting_table = struct('cameraNoise',noise_percent,'prefiltering',prefilt_str,...
-        'subset',sSize,'step',dm,'xcorrType',norm_xcc,'interpolent','spline',...
+        'subset',sSize,'step',dm,'xcorrType','normalized','interpolant','spline',...
         'numMeasurementPts',numel(u{1}{1}),'totalImages',length(u)+1,...
         'displacementSpatialRes',mean(sSize),'displacementResX',meas_res(1),...
         'displacementResY',meas_res(2));
@@ -142,17 +144,17 @@ if no_im == 0
         filt_opt{2}(1),filt_opt{2}(2),filt_opt{3});
     fprintf('Subset \t\t         %0.2g by %0.2gpx\n',sSize(1),sSize(2));
     fprintf('Step         \t\t %0.2gpx\n',dm);
-    fprintf('Correlation type         %s\n',norm_xcc);
+    fprintf('Correlation type     %s\n','normalized');
     fprintf('Interpolation \t\t Spline\n');
     fprintf('Measurement points \t %0.2g\n',numel(u{1}{1}));
     fprintf('Total images \t\t %0.2g\n',length(u)+1);
-    fprintf('Displacement\n   Spatial resolution \t %0.2gpx \n   ',mean(sSize));
+    fprintf('Displacement\n   Spatial resolution \t ~%0.2gpx \n   ',mean(sSize)/2);
     fprintf('Measurement res, x    %0.2g\n   ',meas_res(1));
     fprintf('Measurement res, y    %0.2g\n',meas_res(2));
     fprintf('-----------------------------------------\n');
 
     %Save relavent workspace variables
-    save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoint','reporting_table');
+    save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoints','reporting_table');
 else
     %Save relavent workspace variables
     save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoints');

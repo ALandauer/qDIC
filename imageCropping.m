@@ -107,6 +107,36 @@ if strcmp(crop, 'yes')||strcmp(crop, 'y')
         imwrite(IMG,dir_filename,fmt); %Write the file with the specified settings
     end
     
+elseif length(crop) == 4
+    folder_out = strcat(folder_in,filesep,'cropped_images',filesep);
+    %Make a new output folder if none exists
+    if exist(folder_out,'dir') ~= 7
+        mkdir(folder_out);
+    end
+    
+    %crop to the user-entered size
+    crop_nw_loc = [crop(1),crop(2)];
+    X_ss(1) = crop(1);
+    X_ss(2) = crop(3);
+    Y_ss(1) = crop(2);
+    Y_ss(2) = crop(4);
+    
+    image_idx = 1:spacing:l;
+    % Loop through files
+    for ii = 1:length(image_idx)
+        READ = imread(strcat(folder_in,filesep,files(image_idx(ii)).name));
+        try
+            READ = rgb2gray(READ);
+        catch
+        end
+        IMG = double(READ(Y_ss(1):Y_ss(2),X_ss(1):X_ss(2),1)); %Cropped size from ginput
+        IMG = IMG/(max(IMG(:))); %normalize due to weird behavior of 12 bit images
+        
+        dir_filename = strcat(folder_out,prefixes{image_idx(ii)},'_image_number_',...
+            num2str(image_idx(ii)),ext_out); %use prefix to ensure proper ordering
+        imwrite(IMG,dir_filename,fmt); %Write the file with the specified settings
+    end
+    
 else
     
     folder_out = folder_in;
