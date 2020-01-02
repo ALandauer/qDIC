@@ -131,24 +131,26 @@ if no_im == 0
     %Build the reporting table struct array
     prefilt_str = strcat(filt_opt{1},', ',num2str(filt_opt{2}),', ',num2str(filt_opt{3}));
     reporting_table = struct('cameraNoise',noise_percent,'prefiltering',prefilt_str,...
-        'subset',sSize,'step',dm,'xcorrType','normalized','interpolant','spline',...
+        'initialSubset',sSize,'finalSubset',sSizeMin,'step',dm,'xcorrType','normalized','interpolant','spline',...
         'numMeasurementPts',numel(u{1}{1}),'totalImages',length(u)+1,...
         'displacementSpatialRes',mean(sSize),'displacementResX',meas_res(1),...
-        'displacementResY',meas_res(2));
+        'displacementResY',meas_res(2),'RunMode',runMode);
 
     fprintf('\n-----------------------------------------\n');
     fprintf('Run Parameters and Measurement Specifications\n')
     fprintf('-----------------------------------------\n');
-    fprintf('Camera Noise \t\t %0.2g%%\n',noise_percent);
-    fprintf('Prefiltering \t\t %s, %0.2gx%0.2g, %0.2g\n',filt_opt{1},...
+    fprintf('Camera Noise \t\t  %0.2g%%\n',noise_percent);
+    fprintf('Prefiltering \t\t  %s, %0.2gx%0.2g, %0.2g\n',filt_opt{1},...
         filt_opt{2}(1),filt_opt{2}(2),filt_opt{3});
-    fprintf('Subset \t\t         %0.2g by %0.2gpx\n',sSize(1),sSize(2));
-    fprintf('Step         \t\t %0.2gpx\n',dm);
-    fprintf('Correlation type     %s\n','normalized');
-    fprintf('Interpolation \t\t Spline\n');
-    fprintf('Measurement points \t %0.2g\n',numel(u{1}{1}));
-    fprintf('Total images \t\t %0.2g\n',length(u)+1);
-    fprintf('Displacement\n   Spatial resolution \t ~%0.2gpx \n   ',mean(sSize)/2);
+    fprintf('Initial subset        %ipx by %ipx\n',sSize(1),sSize(2));
+    fprintf('Final (square) subset %ipx\n',sSizeMin);
+    fprintf('Step         \t\t  %0.2gpx\n',dm);
+    fprintf('Run mode     \t\t  %s\n',runMode);
+    fprintf('Correlation type      %s\n','normalized');
+    fprintf('Interpolation \t\t  Spline\n');
+    fprintf('Measurement points \t  %i\n',numel(u{1}{1}));
+    fprintf('Total images \t\t  %i\n',length(u)+1);
+    fprintf('Displacement\n   Spatial resolution ~\t %0.4gpx \n   ',mean(sSizeMin/2));
     fprintf('Measurement res, x    %0.2g\n   ',meas_res(1));
     fprintf('Measurement res, y    %0.2g\n',meas_res(2));
     fprintf('-----------------------------------------\n');
