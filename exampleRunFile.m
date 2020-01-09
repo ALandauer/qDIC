@@ -150,9 +150,9 @@ if no_im == 0
     fprintf('Interpolation \t\t  Spline\n');
     fprintf('Measurement points \t  %i\n',numel(u{1}{1}));
     fprintf('Total images \t\t  %i\n',length(u)+1);
-    fprintf('Displacement\n   Spatial resolution ~\t %0.4gpx \n   ',mean(sSizeMin/2));
-    fprintf('Measurement res, x    %0.2g\n   ',meas_res(1));
-    fprintf('Measurement res, y    %0.2g\n',meas_res(2));
+    fprintf('Displacement\n   Spatial resolution \t ~%0.4gpx \n   ',mean(sSizeMin/2));
+    fprintf('Measurement res, x    %0.2gpx\n   ',meas_res(1));
+    fprintf('Measurement res, y    %0.2gpx\n',meas_res(2));
     fprintf('-----------------------------------------\n');
 
     %Save relavent workspace variables
