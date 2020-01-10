@@ -61,7 +61,6 @@ max_def_idx = 'b'; %Specify where the max deformation occurs
 numImages = 3; %use only first n images in the folder, 'all' for all images
 spacing = 1; %spacing between images to using in input stack
               %Convert input images to .mat
-
 %Compute basic noise floor and measurement resultion metrics
 [noise_percent,meas_res,CI_disp_mean,no_im] = image_eval(folder_in,ext_in,sSize,sSizeMin);
 
