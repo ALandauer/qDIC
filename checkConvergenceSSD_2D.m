@@ -60,43 +60,72 @@ converged01 = 0;
 
 
 if iteration > 1 % skip before first displacement estimation
-
+    
     %check if sSize is larger than the the minimum size requested
     sSize1 = sSize0/2; %window size refinement
-
+    
     % ensure that all subset sizes are at minimum sSizeMin pixels in length
     sSize1(sSize1 < sSizeMin) = sSizeMin;
-
+    
     % window spacing refinement. Only do if the sSpacing > 8 pixels
-    if (sSpacing0 >= 32)
+    if (sSpacing0 >= 2)
         sSpacing1 = sSpacing0/2;
     end
-    sSpacing1(sSpacing1 < 8) = 8;
-
+    sSpacing1(sSpacing1 < 2) = 2;
+    
     if prod(single(sSpacing1 == 16)) % condition if spacing = 16
-
+        
         idx = (find(prod(single(sSpacing == 16),2))-1):iteration;
         if length(idx) > 2
             dSSE = diff(SSE(idx)); % calculate difference
             dSSE = dSSE/dSSE(1); % normalize difference
-
+            
             % if dSSE meets first convergence criteria then refine spacing
             % to the minimum value, 8 pixels.
             if dSSE(end) <= convergenceCrit(1)
                 sSize1 = sSize0;
                 sSpacing1 = [8 8];
-
+                
             end
         end
-
-        % condition if spacing is the minimum, 8 voxels
-    elseif  prod(single(sSpacing1 == 8))
+    elseif prod(single(sSpacing1 == 8)) % condition if spacing = 16
+        
         idx = (find(prod(single(sSpacing == 8),2))-1):iteration;
-
+        if length(idx) > 2
+            dSSE = diff(SSE(idx)); % calculate difference
+            dSSE = dSSE/dSSE(1); % normalize difference
+            
+            % if dSSE meets first convergence criteria then refine spacing
+            % to the minimum value, 8 pixels.
+            if dSSE(end) <= convergenceCrit(1)
+                sSize1 = sSize0;
+                sSpacing1 = [4 4];
+                
+            end
+        end
+    elseif prod(single(sSpacing1 == 4)) % condition if spacing = 16
+        
+        idx = (find(prod(single(sSpacing == 4),2))-1):iteration;
+        if length(idx) > 2
+            dSSE = diff(SSE(idx)); % calculate difference
+            dSSE = dSSE/dSSE(1); % normalize difference
+            
+            % if dSSE meets first convergence criteria then refine spacing
+            % to the minimum value, 8 pixels.
+            if dSSE(end) <= convergenceCrit(1)
+                sSize1 = sSize0;
+                sSpacing1 = [2 2];
+                
+            end
+        end
+        % condition if spacing is the minimum, 8 voxels
+    elseif  prod(single(sSpacing1 == 2))
+        idx = (find(prod(single(sSpacing == 2),2))-1):iteration;
+        
         if length(idx) > 2
             dSSE = diff(SSE(idx));
             dSSE = dSSE/dSSE(1);
-
+            
             % if dSSE meets first convergence criteria and spacing is the
             % mimumum then convergence has been met and stop all
             % iterations.
@@ -107,7 +136,7 @@ if iteration > 1 % skip before first displacement estimation
             end
         end
     end
-
+    
 end
 
 % global threshold criteria

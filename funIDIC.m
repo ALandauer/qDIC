@@ -190,7 +190,7 @@ if sum(mod(sSize,32)) ~= 0
 end
 
 % Minimum subset size
-sSizeMin  = varargin{3};
+sSizeMin  = 2*floor(varargin{3}/2);
 
 % Check run method input
 runMode  = varargin{4};

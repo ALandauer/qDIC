@@ -161,7 +161,9 @@ padSize = varargin{4};
 ccThreshold = varargin{5};
 norm_xcc = varargin{6};
 % cc = varargin{7};
-
+if numel(sSpacing) == 1
+    sSpacing = sSpacing*[1 1];
+end
 % pad images with zeros so that we don't grab any subset outside of the image
 % domain. This would produce an error
 I{1} = padarray(I{1},padSize,'replicate','both');

@@ -47,18 +47,19 @@
 
 clear; close all; clc;
 
+for ii = [9,19,29,39,49,59]
 %set up runtime variables
-sSize = [64 64];
-sSizeMin = 16;
+sSize = [128 128];
+sSizeMin = ii;
 runMode = 'c'; %use 'i' for incremental mode, 'c' for cumulative, and 'h' for hybrid
 ext_in = 'tif'; %Input image format
-folder_in = ['.',filesep,'example_images']; %Folder containing the images series
+folder_in = ['.',filesep,'Star1NoNoise']; %Folder containing the images series
 max_def_idx = 'b'; %Specify where the max deformation occurs
                     %use 'center' or 'c' for the center image,
                     %'end' or 'e' for the last image,
                     %'beginning' or 'b' for the first,
                     %or specific with an integer
-numImages = 3; %use only first n images in the folder, 'all' for all images
+numImages = 'all'; %use only first n images in the folder, 'all' for all images
 spacing = 1; %spacing between images to using in input stack
               %Convert input images to .mat
 %Compute basic noise floor and measurement resultion metrics
@@ -66,11 +67,11 @@ spacing = 1; %spacing between images to using in input stack
 
 %Optionally crop images.  Set crop to 'y' or 'yes' to enable cropping,
 %or enter a set of coordinates [x_topleft,y_topleft,x_bottomright,y_bottomright].
-crop = 'yes';
+crop = 'no';
 % crop = [1,1,511,511];
 [crop_nw_loc,folder_out,ext_crp] = imageCropping(folder_in,ext_in,numImages,spacing,max_def_idx,crop);
 
-resultsFolder = ['.',filesep,'Results',filesep];
+resultsFolder = ['.',filesep,folder_in,'_results',filesep];
 
 
 filter_yes_no = 'yes';
@@ -79,7 +80,7 @@ filt_opt = {'gaussian',[3,3],0.5};
 mat_file_save_yes_no = 'no'; % Whether or not to save each img or keep in RAM.
                       %For large images or a large number of image, save
                       %them to disk ("yes") if you run out of RAM, otherwise
-                      %keeping in RAM ("no") is a faster options.
+                      %keeping in RAM ("no") is a faster option.
 
 if strcmp(mat_file_save_yes_no(1),'n')
     %no mat files saved
@@ -158,10 +159,10 @@ if no_im == 0
     save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoints','reporting_table');
 else
     %Save relavent workspace variables
-    save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoints');
+    save(strcat(resultsFolder,'results_qDIC_ss',num2str(ii),'.mat'),'u','cc','dm','gridPoints');
 end
 
-
+end
 %% CLEAN UP
 %Clean up the current set of images from the cd
 if strcmp(mat_file_save_yes_no(1),'y')
