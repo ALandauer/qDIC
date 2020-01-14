@@ -47,13 +47,17 @@
 
 clear; close all; clc;
 
+folders = {'Star2Noise','Star3NoNoiseStrain','Star4NoiseStrain','Star5LargeNoisy','Star6StrainNoisy'};
+
+for jj = 1:5
+
 for ii = [9,19,29,39,49,59]
 %set up runtime variables
 sSize = [128 128];
 sSizeMin = ii;
 runMode = 'c'; %use 'i' for incremental mode, 'c' for cumulative, and 'h' for hybrid
 ext_in = 'tif'; %Input image format
-folder_in = ['.',filesep,'Star1NoNoise']; %Folder containing the images series
+folder_in = ['.',filesep,folders{jj}]; %Folder containing the images series
 max_def_idx = 'b'; %Specify where the max deformation occurs
                     %use 'center' or 'c' for the center image,
                     %'end' or 'e' for the last image,
@@ -161,7 +165,7 @@ else
     %Save relavent workspace variables
     save(strcat(resultsFolder,'results_qDIC_ss',num2str(ii),'.mat'),'u','cc','dm','gridPoints');
 end
-
+end
 end
 %% CLEAN UP
 %Clean up the current set of images from the cd
