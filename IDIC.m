@@ -30,8 +30,8 @@ function [u, cc, dm, mFinal, decorrFlag] = IDIC(varargin)
 % https://doi.org/10.1007/s11340-018-0377-4
 
 % PRESET CONSTANTS
-maxIterations = 11; % maximum number of iterations
-dm = 1; % desired output mesh spacing
+maxIterations = 3; % maximum number of iterations
+dm = 8; % desired output mesh spacing
 norm_xcc = 'n'; %switch to 'u' for un-normalized xcc - faster but less accurate
 convergenceCrit = [0.15, 0.25, 0.075]; % convergence criteria
 ccThreshold = 1e-4; % bad cross-correlation threshold (un-normalized)

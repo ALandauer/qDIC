@@ -47,13 +47,13 @@
 
 clear; close all; clc;
 
-folders = {'Star2Noise','Star3NoNoiseStrain','Star4NoiseStrain','Star5LargeNoisy','Star6StrainNoisy'};
+folders = {'Star1NoNoise','Star2Noise','Star3NoNoiseStrain','Star4NoiseStrain','Star5LargeNoisy','Star6StrainNoisy'};
 
-for jj = 1:5
+for jj = 1:6
 
-for ii = [9,19,29,39,49,59]
+for ii = [8,16,24,32,40,48,56,64]%[9,19,29,39,49,59]
 %set up runtime variables
-sSize = [128 128];
+sSize = [64 64];
 sSizeMin = ii;
 runMode = 'c'; %use 'i' for incremental mode, 'c' for cumulative, and 'h' for hybrid
 ext_in = 'tif'; %Input image format
@@ -75,10 +75,10 @@ crop = 'no';
 % crop = [1,1,511,511];
 [crop_nw_loc,folder_out,ext_crp] = imageCropping(folder_in,ext_in,numImages,spacing,max_def_idx,crop);
 
-resultsFolder = ['.',filesep,folder_in,'_results',filesep];
+resultsFolder = ['.',filesep,folder_in,'_results_ss_mtf2x',filesep];
 
 
-filter_yes_no = 'yes';
+filter_yes_no = 'no';
 filt_opt = {'gaussian',[3,3],0.5};
 
 mat_file_save_yes_no = 'no'; % Whether or not to save each img or keep in RAM.
@@ -163,7 +163,7 @@ if no_im == 0
     save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoints','reporting_table');
 else
     %Save relavent workspace variables
-    save(strcat(resultsFolder,'results_qDIC_ss',num2str(ii),'.mat'),'u','cc','dm','gridPoints');
+    save(strcat(resultsFolder,'results_qDIC_ss',num2str(ii),'_img.mat'),'u','dm','gridPoints','cellIMG');
 end
 end
 end

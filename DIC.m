@@ -281,7 +281,7 @@ function varargout = generateMTF(sSize)
 
 %% equation 4
 
-if prod(single(sSize == 16)) || prod(single(sSize == 32)) || prod(single(sSize == 64))
+% if prod(single(sSize == 8)) || prod(single(sSize == 16)) || prod(single(sSize == 32)) || prod(single(sSize == 32)) || prod(single(sSize == 48)) || prod(single(sSize == 32)) || prod(single(sSize == 64))
     sSize = sSize(1);
 
     x = cell(1,2);
@@ -318,14 +318,14 @@ if prod(single(sSize == 16)) || prod(single(sSize == 32)) || prod(single(sSize =
     end
     nu{3}(nu{3} < 0) = 0;
 
-else
-
-    nu{1} = ones(sSize(1),sSize(2));
-    nu{2} = nu{1};
-    nu{3} = nu{1};   %==== Based on the usage and the paper this comes from
-    %nu should remain 3-dims even for the 2D case
-
-end
+% else
+% 
+%     nu{1} = ones(sSize(1),sSize(2));
+%     nu{2} = nu{1};
+%     nu{3} = nu{1};   %==== Based on the usage and the paper this comes from
+%     %nu should remain 3-dims even for the 2D case
+% 
+% end
 
 nu = cellfun(@(x) x/sum(x(:)), nu, 'UniformOutput',0);
 nu = cellfun(@sqrt, nu, 'UniformOutput',0);
