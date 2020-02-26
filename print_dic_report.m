@@ -16,13 +16,13 @@ function [] = print_dic_report(reporting_table)
 fprintf('\n-----------------------------------------\n');
 fprintf('Run Parameters and Measurement Specifications\n')
 fprintf('-----------------------------------------\n');
-fprintf('Camera Noise \t\t  %0.2g%%\n',reporting_table.noise_percent{ii});
-fprintf('Prefiltering \t\t  %s\n',reporting_table.prefilt_str);
+fprintf('Camera Noise \t\t  %0.2g%%\n',reporting_table.cameraNoise);
+fprintf('Prefiltering \t\t  %s\n',reporting_table.prefiltering);
 fprintf('Image size            %ipx by %ipx\n',reporting_table.imageSize(1),reporting_table.imageSize(2));
 fprintf('Initial subset        %ipx by %ipx\n',reporting_table.initialSubset(1),reporting_table.initialSubset(2));
 fprintf('Final (square) subset %ipx\n',reporting_table.finalSubset);
 fprintf('Step         \t\t  %0.2gpx\n',reporting_table.step);
-fprintf('Run mode     \t\t  %s\n',reporting_table.runMode);
+fprintf('Run mode     \t\t  %s\n',reporting_table.RunMode);
 fprintf('Correlation type      %s\n','normalized');
 fprintf('Interpolation \t\t  Spline\n');
 fprintf('Measurement points \t  %i\n',reporting_table.numMeasurementPts);
