@@ -28,8 +28,8 @@ fprintf('Interpolation \t\t  Spline\n');
 fprintf('Measurement points \t  %i\n',reporting_table.numMeasurementPts);
 fprintf('Total images \t\t  %i\n',reporting_table.totalImages);
 fprintf('Displacement\n   Spatial resolution \t ~%0.4gpx \n   ',reporting_table.finalSubset/2);
-fprintf('Measurement res, x    %0.2gpx\n   ',reporting_table.displacementResX);
-fprintf('Measurement res, y    %0.2gpx\n',reporting_table.displacementResY);
+fprintf('Uncertainty, x    %0.2gpx\n   ',reporting_table.displacementResX);
+fprintf('Uncertainty, y    %0.2gpx\n',reporting_table.displacementResY);
 fprintf('-----------------------------------------\n');
 
 
