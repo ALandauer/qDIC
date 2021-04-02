@@ -68,7 +68,7 @@ if iteration > 1 % skip before first displacement estimation
     sSize1(sSize1 < sSizeMin) = sSizeMin;
 
     % window spacing refinement. 
-    if (sSpacing0 >= 32)
+    if (sSpacing0 >= 16)
         sSpacing1 = sSpacing0/2;
     end
     sSpacing1(sSpacing1 < 8) = 8;
