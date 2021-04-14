@@ -1,5 +1,6 @@
 function [ucum] = inc2cum(u,dm,m,option)
-%Conver incremental FIDIC/FIDVC displacement to cumulative displacements
+%Convert incremental FIDIC/FIDVC displacement to cumulative displacements
+%on the reference configuration
 %   Inputs:
 %   -----------------------------------------------------------------------
 %   u:  displacement field vector calculated from FIDIC/FIDVC.
