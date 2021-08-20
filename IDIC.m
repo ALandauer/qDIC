@@ -33,7 +33,7 @@ function [u, cc, dm, mFinal, decorrFlag] = IDIC(varargin)
 maxIterations = 9; % maximum number of iterations
 dm = 8; % desired output mesh spacing
 norm_xcc = 'n'; %switch to 'u' for un-normalized xcc - faster but less accurate
-convergenceCrit = [0.15, 0.25, 0.075]; % convergence criteria
+convergenceCrit = [0.15, 0.15, 0.075]; % convergence criteria
 ccThreshold = 1e-4; % bad cross-correlation threshold (un-normalized)
 %[not used in norm version]
 sizeThresh = 196;  %Threshold for maximum size of bad correlation regions
@@ -74,6 +74,13 @@ while ~converged01 && i - 1 < maxIterations
             [I, m] = parseImages(I,sSize(i,:),sSpacing(i,:));
 %             u{1} = 0; %reset disp to zero
 %             u{2} = 0;
+        elseif i == 3 || i == 4
+            u_cur{1}{1} = inpaint_nans(u{1});
+            u_cur{1}{2} = inpaint_nans(u{2});
+            smoothing.G = 100; smoothing.nu = 0.1; plotting_flag = 0;
+            u_ = equilb_smooth_qDIC(u_cur,mFinal,1,smoothing,plotting_flag);
+            u{1} = u_{1}{1};
+            u{2} = u_{1}{2};
         end
 
         % run cross-correlation to get an estimate of the displacements
