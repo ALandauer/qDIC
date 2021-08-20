@@ -68,6 +68,8 @@ if strcmp(crop, 'yes')||strcmp(crop, 'y')
         im_loc = l;
     elseif strcmp(max_def_idx,'beginning')||strcmp(max_def_idx,'b')
         im_loc = 1;
+    else
+        im_loc = max_def_idx;
     end
     figure
     try
