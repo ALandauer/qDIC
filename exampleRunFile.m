@@ -2,7 +2,7 @@
 % VARIABLES OPTIONS
 % -------------------------------------------------------------------------
 %   imagesFolder: subdirectory containing the series of images on which to run
-%                 FIDIC. Images are read in alphanumeric order, which is
+%                 qFIDIC. Images are read in alphanumeric order, which is
 %                 assumed to be consistent with time steps.
 %   Ext: the file extension of the input images.  All images must be of the
 %        same type.
@@ -54,13 +54,13 @@ runMode = 'c'; %use 'i' for incremental mode, 'c' for cumulative, and 'h' for hy
 ext_in = 'tif'; %Input image format
 folder_in = ['.',filesep,'example_images']; %Folder containing the images series
 max_def_idx = 'b'; %Specify where the max deformation occurs
-                    %use 'center' or 'c' for the center image,
-                    %'end' or 'e' for the last image,
-                    %'beginning' or 'b' for the first,
-                    %or specific with an integer
+%use 'center' or 'c' for the center image,
+%'end' or 'e' for the last image,
+%'beginning' or 'b' for the first,
+%or specific with an integer
 numImages = 3; %use only first n images in the folder, 'all' for all images
 spacing = 1; %spacing between images to using in input stack
-              %Convert input images to .mat
+%Convert input images to .mat
 %Compute basic noise floor and measurement resultion metrics
 [noise_percent,meas_res,CI_disp_mean,no_im] = image_eval(folder_in,ext_in,sSize,sSizeMin);
 
@@ -70,16 +70,16 @@ crop = 'yes';
 % crop = [1,1,511,511];
 [crop_nw_loc,folder_out,ext_crp] = imageCropping(folder_in,ext_in,numImages,spacing,max_def_idx,crop);
 
-resultsFolder = ['.',filesep,'Results',filesep];
+resultsFolder = ['.',filesep,'Results',filesep,folder_in,filesep];
 
 
 filter_yes_no = 'yes';
 filt_opt = {'gaussian',[3,3],0.5};
 
 mat_file_save_yes_no = 'no'; % Whether or not to save each img or keep in RAM.
-                      %For large images or a large number of image, save
-                      %them to disk ("yes") if you run out of RAM, otherwise
-                      %keeping in RAM ("no") is a faster options.
+%For large images or a large number of image, save
+%them to disk ("yes") if you run out of RAM, otherwise
+%keeping in RAM ("no") is a faster options.
 
 if strcmp(mat_file_save_yes_no(1),'n')
     %no mat files saved
@@ -112,12 +112,12 @@ end
 
 % Estimate displacements via IDIC
 if strcmp(mat_file_save_yes_no(1),'n')
-[u, cc, dm, gridPoints, tSwitch] = ...
-    funIDIC(cellIMG, sSize, sSizeMin, runMode); %pass "cellIMG" if mat_file_save is
-                                                 %"no" or "filename" if
-                                                 %"yes" (first argument)
+    [u, cc, dm, gridPoints, tSwitch] = ...
+        funIDIC(cellIMG, sSize, sSizeMin, runMode); %pass "cellIMG" if mat_file_save is
+    %"no" or "filename" if
+    %"yes" (first argument)
 else
-[u, cc, dm, gridPoints, tSwitch] = funIDIC(filename, sSize, sSizeMin, runMode);
+    [u, cc, dm, gridPoints, tSwitch] = funIDIC(filename, sSize, sSizeMin, runMode);
 end
 
 % Save the results
@@ -132,9 +132,9 @@ if no_im == 0
     reporting_table = struct('cameraNoise',noise_percent,'prefiltering',prefilt_str,...
         'initialSubset',sSize,'finalSubset',sSizeMin,'step',dm,'xcorrType','normalized','interpolant','spline',...
         'numMeasurementPts',numel(u{1}{1}),'totalImages',length(u)+1,...
-        'displacementSpatialRes',mean(sSize),'displacementResX',meas_res(1),...
+        'displacementSpatialRes',mean(sSize/2),'displacementResX',meas_res(1),...
         'displacementResY',meas_res(2),'RunMode',runMode);
-
+    
     fprintf('\n-----------------------------------------\n');
     fprintf('Run Parameters and Measurement Specifications\n')
     fprintf('-----------------------------------------\n');
@@ -153,7 +153,7 @@ if no_im == 0
     fprintf('Uncertainty, x    %0.2gpx\n   ',meas_res(1));
     fprintf('Uncertainty, y    %0.2gpx\n',meas_res(2));
     fprintf('-----------------------------------------\n');
-
+    
     %Save relavent workspace variables
     save(strcat(resultsFolder,'results_qDIC.mat'),'u','cc','dm','gridPoints','reporting_table');
 else
