@@ -74,7 +74,7 @@ while ~converged01 && i - 1 < maxIterations
             [I, m] = parseImages(I,sSize(i,:),sSpacing(i,:));
 %             u{1} = 0; %reset disp to zero
 %             u{2} = 0;
-        elseif i == 3 || i == 4
+        elseif i == 30 || i == 40
             u_cur{1}{1} = inpaint_nans(u{1});
             u_cur{1}{2} = inpaint_nans(u{2});
             smoothing.G = 100; smoothing.nu = 0.1; plotting_flag = 0;
